@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kelvinkulbetz Stresser ⚡</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    /********** DASAR TAMPILAN **********/
+    body{
+      margin:0;
+      font-family:'Outfit',sans-serif;
+      background:linear-gradient(to bottom,#000000,#011627);
+      color:#e0f7fa;
+      padding:20px;
+      animation:backgroundAnimation 3s infinite alternate;
+    }
+    @keyframes backgroundAnimation{
+      0%{background-color:#000}
+      50%{background-color:#202020}
+      100%{background-color:#000}
+    }
+
+    header{ text-align:center; padding:10px; }
+    header h1{
+      font-size:2em;
+      color:#00ffe7;
+      margin:10px 0;
+      overflow:hidden;
+      white-space:nowrap;
+    }
+
+    .container{ display:flex; flex-direction:column; gap:25px; }
+
+    .card{
+      background:rgba(0,0,0,.65);
+      border:1px solid #00cfff;
+      border-left:6px solid #00ffe7;
+      border-radius:12px;
+      padding:20px;
+      box-shadow:0 0 15px rgba(0,255,255,.1);
+      position:relative;
+      overflow:hidden;
+      transform:scale(.95);
+      opacity:0;
+    }
+    .card h2{ margin-top:0; color:#00ffe7; font-size:1.4em; }
+    .card p,li{ margin:8px 0; font-size:1rem; }
+
+    .loading-bar{
+      width:100%; height:6px; background:#1b1b1b;
+      border-radius:10px; overflow:hidden; margin-top:15px;
+    }
+    .loading-fill{
+      height:100%; width:0%;
+      background:linear-gradient(90deg,#00aaff,#ff6a00);
+      animation:loading 4s infinite;
+    }
+    @keyframes loading{
+      0%{width:0%} 50%{width:90%} 100%{width:0%}
+    }
+
+    .button{
+      background:#00e5ff; color:#000;
+      padding:12px 20px; border:none; border-radius:8px;
+      font-weight:bold; font-size:1rem; cursor:pointer;
+      transition:background .3s ease;
+      margin-top:10px;
+      opacity:0; transform:translateY(10px);
+    }
+    .button:hover{ background:#00bcd4; }
+
+    iframe{
+      display:block; margin:20px auto;
+      border-radius:12px; max-width:100%;
+      width:240px; height:135px;
+    }
+
+    a{ color:#80ffff; text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    footer{ text-align:center; margin-top:40px; font-size:.9em; color:#555; }
+
+    .dark-light-toggle{
+      position:fixed; top:20px; right:20px;
+      background:#fff; color:#000; padding:10px;
+      border:none; border-radius:50%; cursor:pointer;
+      transition:background .3s ease;
+    }
+    .dark-light-toggle:hover{ background:#00bcd4; }
+
+    /********** ANIMASI SCROLL **********/
+    /* judul pelangi bergeser */
+    @keyframes rainbowFlash{
+      0%  {color:red;   transform:translateX(-100px);}
+      25% {color:orange;transform:translateX(0);}
+      50% {color:yellow;transform:translateX(100px);}
+      75% {color:lime;  transform:translateX(0);}
+      100%{color:cyan;  transform:translateX(-100px);}
+    }
+    .animate-slide-color{ animation:rainbowFlash 2s ease-in-out forwards; }
+
+    /* card zoom-in */
+    @keyframes cardPop{ to{transform:scale(1); opacity:1;} }
+    .card.animate-card{ animation:cardPop .8s ease-out forwards; }
+
+    /* tombol glow */
+    @keyframes buttonGlow{
+      0%,100%{background:#00e5ff;box-shadow:0 0 5px #00e5ff;}
+      50%    {background:#ff00c8;box-shadow:0 0 15px #ff00c8;}
+    }
+    .button.animate-button{
+      animation:buttonGlow 1.5s infinite alternate;
+      opacity:1; transform:translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Tombol gelap/terang -->
+  <button class="dark-light-toggle" id="toggleMode">🌙</button>
+
+  <!-- Video header -->
+  <video src="https://files.catbox.moe/9dl8cf.mp4" autoplay loop muted playsinline
+    style="width:100%;max-width:350px;height:auto;border-radius:16px;display:block;margin:20px auto;">
+  </video>
+
+  <header>
+    <h1 id="mainTitle">Kelvinkulbetz Stresser ⚡</h1>
+  </header>
+
+  <div class="container">
+    <!-- CARD 1 -->
+    <div class="card">
+      <h2>SELL ACCOUNT DIGITALOCEAN</h2>
+      <p><strong>10 Droplet</strong> = Rp145.000</p>
+      <p><strong>3 Droplet</strong> = Rp125.000</p>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="card">
+      <h2>VPS &amp; RDP</h2>
+      <label for="vpsSelect"><strong>Pilih Paket:</strong></label><br>
+      <select id="vpsSelect" class="button">
+        <option value="VPS 16GB RAM | 4 vCPU - Rp45.000">VPS 16GB RAM | 4 vCPU - Rp45.000</option>
+        <option value="RDP 32GB RAM - Rp60.000">RDP 32GB RAM - Rp60.000</option>
+      </select><br><br>
+      <p><em>*Tes login dulu, baru bayar!*</em></p>
+      <button class="button" onclick="pesanVPS()">Pesan Sekarang</button>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="card">
+      <h2>Script DDoS Methods</h2>
+      <label for="scSelect"><strong>Pilih Paket:</strong></label><br>
+      <select id="scSelect" class="button">
+        <option value="Script Layer 4 & 7 Lengkap - Bonus Tools & Tutorial">Script Layer 4 & 7 Lengkap - Bonus Tools & Tutorial</option>
+        <option value="Script Basic Layer 7 Only - coming soon">Script Basic Layer 7 Only - coming soon</option>
+      </select><br><br>
+      <p>Termasuk tools, tutorial &amp; update metode terbaru.</p>
+      <button class="button" onclick="pesanSC()">Pesan Sekarang</button>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="card">
+      <h2>Hosting Minecraft</h2>
+      <label for="hostSelect"><strong>Pilih Paket Hosting:</strong></label><br>
+      <select id="hostSelect" class="button">
+        <option value="1GB RAM, 2 CPU - Rp2.000">1GB RAM, 2 CPU - Rp2.000</option>
+        <option value="2GB RAM, 2 CPU - Rp3.000">2GB RAM, 2 CPU - Rp3.000</option>
+        <option value="4GB RAM, 6 CPU - Rp5.000">4GB RAM, 6 CPU - Rp5.000</option>
+        <option value="8GB RAM - Rp9.000">8GB RAM - Rp9.000</option>
+        <option value="UNLIMITED RAM (Anti-DDoS) - Rp15.000">UNLIMITED RAM (Anti-DDoS) - Rp15.000</option>
+      </select><br><br>
+      <p><em>Full akses FTP, panel game, anti lag &amp; DDoS protection!</em></p>
+      <button class="button" onclick="pesanHost()">Pesan Sekarang</button>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+    </div>
+
+    <!-- CARD 5 -->
+    <div class="card">
+      <h2>Cocok untuk:</h2>
+      <ul>
+        <li>Deploy bot / script</li>
+        <li>Hosting website</li>
+        <li>Pasang panel (XUI, SSH, dsb)</li>
+        <li>Setup VPN pribadi</li>
+        <li>Belajar server-side</li>
+      </ul>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+    </div>
+
+    <!-- CARD 6 -->
+    <div class="card">
+      <h2>Order Sekarang</h2>
+      <label for="dropletSelect"><strong>Pilih Jumlah Droplet:</strong></label><br>
+      <select id="dropletSelect" class="button">
+        <option value="10 Droplet - Rp145.000">10 Droplet - Rp145.000</option>
+        <option value="3 Droplet - Rp125.000">3 Droplet - Rp125.000</option>
+      </select><br><br>
+
+      <a href="https://chat.whatsapp.com/FUbYLq6ulu4FTuICfstYpH" target="_blank">
+        <button class="button">Gabung Grup WhatsApp</button>
+      </a>
+
+      <a href="https://www.testimoni-link.com" target="_blank">
+        <button class="button">Lihat Testimoni Pengguna</button>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Kelvinkulbetz. Semua hak cipta dilindungi.</p>
+  </footer>
+
+  <script>
+    /********** MODE GELAP/TERANG **********/
+    const toggleButton=document.getElementById('toggleMode');
+    toggleButton.addEventListener('click',()=>{
+      document.body.classList.toggle('dark-mode');
+      if(document.body.classList.contains('dark-mode')){
+        toggleButton.textContent='🌕';
+        document.body.style.background='#f5f5f5';
+        document.body.style.color='#000';
+      }else{
+        toggleButton.textContent='🌙';
+        document.body.style.background='linear-gradient(to bottom,#000000,#011627)';
+        document.body.style.color='#e0f7fa';
+      }
+    });
+
+    /********** ANIMASI SCROLL **********/
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          if(entry.target.classList.contains('card')) entry.target.classList.add('animate-card');
+          if(entry.target.classList.contains('button')) entry.target.classList.add('animate-button');
+          if(entry.target.id==='mainTitle') entry.target.classList.add('animate-slide-color');
+          /* hapus class setelah animasi selesai agar warna kembali normal */
+          if(entry.target.id==='mainTitle'){
+            setTimeout(()=>entry.target.classList.remove('animate-slide-color'),2000);
+          }
+        }else{
+          entry.target.classList.remove('animate-card','animate-button');
+        }
+      });
+    },{threshold:.5});
+
+    document.querySelectorAll('.card,.button,#mainTitle').forEach(el=>observer.observe(el));
+
+    /********** FUNGSI DEMO PESAN (opsional) **********/
+    function pesanVPS(){alert('Silakan chat admin untuk order VPS/RDP!');}
+    function pesanSC(){alert('Silakan chat admin untuk order script DDoS!');}
+    function pesanHost(){alert('Silakan chat admin untuk order hosting!');}
+  </script>
+</body>
+</html>
